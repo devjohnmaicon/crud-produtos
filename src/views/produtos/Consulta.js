@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ProdutoService from '../../app/ProdutoService';
+import Card from '../../components/Card';
+import ProdutosTable from './ProdutosTable';
 
 class ConsultaProdutos extends React.Component {
   state = {
@@ -28,50 +30,13 @@ class ConsultaProdutos extends React.Component {
 
   render() {
     return (
-      <div className="card">
-        <div className="card-header fs-2">Consulta de Produtos</div>
-
-        <div className="card-body">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>SKU</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Fornecedor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.produtos.map((produto, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{produto.nome}</td>
-                    <td>{produto.sku}</td>
-                    <td>{produto.descricao}</td>
-                    <td>{produto.preco}</td>
-                    <td>{produto.fornecedor}</td>
-                    <td>
-                      <button
-                        onClick={() => this.editarProduto(produto.sku)}
-                        className="btn btn-primary mx-2"
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => this.removerProduto(produto.sku)}
-                        className="btn btn-danger "
-                      >
-                        Remover
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <Card header="Consulta de Produtos">
+        <ProdutosTable
+          produtos={this.state.produtos}
+          editar={() => this.editarProduto}
+          remover={() => this.removerProduto}
+        />
+      </Card>
     );
   }
 }
