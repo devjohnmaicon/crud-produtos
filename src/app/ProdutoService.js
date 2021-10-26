@@ -7,6 +7,7 @@ export function ErroValidacao(errors) {
 export default class ProdutoService {
   buscarProdutos = () => {
     const produtos = localStorage.getItem(PRODUTOS);
+    if (!produtos) return [];
     return JSON.parse(produtos);
   };
 
@@ -35,7 +36,7 @@ export default class ProdutoService {
     }
   };
 
-  verificaUpdate(sku) {
+  obterIndex(sku) {
     let index = null;
     this.buscarProdutos().forEach((produto, i) => {
       if (produto.sku === sku) {
@@ -57,11 +58,19 @@ export default class ProdutoService {
       produtos = JSON.parse(produtos);
     }
 
-    const indexDoProduto = this.verificaUpdate(produto.sku);
+    const indexDoProduto = this.obterIndex(produto.sku);
     indexDoProduto === null
       ? produtos.push(produto)
       : (produtos[indexDoProduto] = produto);
 
     localStorage.setItem(PRODUTOS, JSON.stringify(produtos));
+  };
+
+  remover = (sku) => {
+    const produtos = this.buscarProdutos();
+    const newArray = produtos.filter((produto) => produto.sku !== sku);
+
+    localStorage.setItem(PRODUTOS, JSON.stringify(newArray));
+    return newArray;
   };
 }
